@@ -11,13 +11,7 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreen extends State<DetailScreen> {
-  late Future<List<PhotoDTO>>? futurePhotos;
-
-  @override
-  void initState() {
-    super.initState();
-    futurePhotos = fetchPhotos();
-  }
+  Future<List<PhotoDTO>> futurePhotos = fetchPhotos();
 
   @override
   Widget build(BuildContext context) {

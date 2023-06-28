@@ -4,21 +4,8 @@ import 'package:photo_library/model/album.dart';
 import '../../api/json_placeholder_album_api_impl.dart';
 
 // 앨범 목록
-class MainScreen extends StatefulWidget {
+class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
-
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  late Future<List<AlbumDTO>>? futureAlbums;
-
-  @override
-  void initState() {
-    super.initState();
-    futureAlbums = fetchAlbums();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +17,7 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           Expanded(
             child: FutureBuilder<List<AlbumDTO>>(
-              future: futureAlbums,
+              future: fetchAlbums(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   List<AlbumDTO>? albums = snapshot.data;
@@ -39,6 +26,9 @@ class _MainScreenState extends State<MainScreen> {
                       children: albums.map((album) {
                         return ListTile(
                           title: Text(album.title),
+                          onTap: () {
+                            context.push('/detail');
+                          },
                         );
                       }).toList(),
                     );
@@ -50,9 +40,6 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
           ),
-          ElevatedButton(
-              onPressed: () => GoRouter.of(context).go('/detail'),
-              child: const Text('detail'))
         ],
       ),
     );
